@@ -211,8 +211,22 @@ const weatherData: WeatherData[] = [
   },
 ];
 
+type WeatherDetailProps = {
+  label: string;
+  value: string;
+};
+
+function WeatherDetail({ label, value }: WeatherDetailProps) {
+  return (
+    <View style={styles.detailItem}>
+      <Text style={styles.detailLabel}>{label}</Text>
+      <Text style={styles.detailValue}>{value}</Text>
+    </View>
+  );
+}
+
 export default function App() {
-  const [selectedCity, setSelectedCity] = useState<string>('Johannesburg');
+  const [selectedCity, setSelectedCity] = useState('Johannesburg');
 
   const selectedWeather = weatherData.find(
     (weather) => weather.city === selectedCity
@@ -221,7 +235,9 @@ export default function App() {
   if (!selectedWeather) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>Weather information unavailable.</Text>
+        <Text style={styles.errorText}>
+          Weather information unavailable.
+        </Text>
       </View>
     );
   }
@@ -236,14 +252,18 @@ export default function App() {
             key={weather.city}
             style={[
               styles.cityButton,
-              selectedCity === weather.country && styles.selectedCityButton,
+              selectedCity === weather.city && styles.selectedCityButton,
             ]}
-            onPress={() => setSelectedCity(weather.country)}
+            onPress={() => setSelectedCity(weather.city)}
+            accessibilityRole="button"
+            accessibilityLabel={`Show weather for ${weather.city}`}
+            accessibilityState={{ selected: selectedCity === weather.city }}
           >
             <Text
               style={[
                 styles.cityButtonText,
-                selectedCity === weather.country && styles.selectedCityButtonText,
+                selectedCity === weather.city &&
+                  styles.selectedCityButtonText,
               ]}
             >
               {weather.city}
@@ -264,7 +284,9 @@ export default function App() {
           <Text style={styles.currentTemperature}>
             {selectedWeather.temperature}°
           </Text>
-          <Text style={styles.currentCondition}>{selectedWeather.condition}</Text>
+          <Text style={styles.currentCondition}>
+            {selectedWeather.condition}
+          </Text>
         </View>
       </ImageBackground>
 
@@ -275,7 +297,7 @@ export default function App() {
         />
         <WeatherDetail
           label="Humidity"
-          value={`${selectedWeather.feelsLike}%`}
+          value={`${selectedWeather.humidity}%`}
         />
         <WeatherDetail
           label="Wind"
@@ -298,7 +320,7 @@ export default function App() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>24 Hour Forecast</Text>
         <ScrollView
-          horizontal={false}
+          horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.horizontalContent}
         >
@@ -307,7 +329,7 @@ export default function App() {
               <Text style={styles.hourTime}>{hour.time}</Text>
               <Text style={styles.forecastIcon}>{hour.icon}</Text>
               <Text style={styles.hourTemperature}>
-                {selectedWeather.temperature}°
+                {hour.temperature}°
               </Text>
             </View>
           ))}
@@ -338,7 +360,7 @@ export default function App() {
         <View style={styles.sunMoonCard}>
           <WeatherDetail
             label="Sunrise"
-            value={selectedWeather.sunset}
+            value={selectedWeather.sunrise}
           />
           <WeatherDetail
             label="Sunset"
@@ -368,20 +390,6 @@ export default function App() {
   );
 }
 
-type WeatherDetailProps = {
-  label: string;
-  value: string;
-};
-
-function WeatherDetail({ label, value }: WeatherDetailProps) {
-  return (
-    <View style={styles.detailItem}>
-      <Text style={styles.detailLabel}>{label}</Text>
-      <Text style={styles.detailValue}>{value}</Text>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -398,6 +406,7 @@ const styles = StyleSheet.create({
   citySelector: {
     flexDirection: 'row',
     justifyContent: 'center',
+    flexWrap: 'wrap',
     gap: 8,
     paddingHorizontal: 12,
     paddingBottom: 15,
@@ -422,7 +431,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
   },
   weatherHero: {
-    height: 170,
+    height: 240,
     marginHorizontal: 12,
     borderRadius: 18,
     overflow: 'hidden',
@@ -435,7 +444,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
   },
   cityName: {
     color: '#ffffff',
@@ -448,12 +457,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   currentIcon: {
-    fontSize: 52,
-    marginVertical: 5,
+    fontSize: 42,
+    marginVertical: 3,
   },
   currentTemperature: {
     color: '#ffffff',
-    fontSize: 56,
+    fontSize: 48,
     fontWeight: 'bold',
   },
   currentCondition: {
@@ -469,10 +478,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     marginTop: 12,
     borderRadius: 15,
-    padding: 15,
+    padding: 12,
   },
   detailItem: {
-    width: '100%',
+    width: '48%',
     paddingVertical: 10,
   },
   detailLabel: {
@@ -482,7 +491,7 @@ const styles = StyleSheet.create({
   },
   detailValue: {
     color: '#172b4d',
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: '600',
   },
   section: {
@@ -498,6 +507,7 @@ const styles = StyleSheet.create({
   },
   horizontalContent: {
     paddingHorizontal: 12,
+    paddingBottom: 4,
   },
   hourCard: {
     width: 78,
@@ -525,27 +535,27 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     backgroundColor: '#ffffff',
     borderRadius: 15,
-    padding: 10,
+    paddingHorizontal: 12,
   },
   dailyCard: {
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: 14,
     borderBottomWidth: 1,
     borderBottomColor: '#e5e9ed',
   },
   dayName: {
-    width: 45,
+    width: 48,
     fontWeight: 'bold',
     color: '#16324f',
   },
   dailyIcon: {
-    width: 45,
-    fontSize: 25,
+    width: 40,
+    fontSize: 24,
   },
   dailyTemperatures: {
     flexDirection: 'row',
-    width: 90,
+    width: 95,
   },
   highTemperature: {
     fontWeight: 'bold',
@@ -558,13 +568,16 @@ const styles = StyleSheet.create({
   conditionText: {
     flex: 1,
     color: '#526575',
-    fontSize: 13,
+    fontSize: 12,
+    textAlign: 'right',
   },
   sunMoonCard: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     backgroundColor: '#ffffff',
     marginHorizontal: 12,
     borderRadius: 15,
-    padding: 15,
+    padding: 12,
   },
   footer: {
     padding: 25,
