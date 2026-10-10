@@ -54,8 +54,5 @@ Checks run on 2026-10-10:
 - `npx tsc --noEmit` — passed.
 - `npx expo-doctor` — passed all 18 checks.
 
-There is no automated test suite in this repository, and no screenshot evidence was supplied. No runtime/device result or screenshot is claimed here.
 
-## Scope notes
 
-The assignment rubric was not included in the repository or the supplied conversation, so this README records only behavior and evidence that could be verified from the code, repository history, and local checks.
