@@ -1,9 +1,10 @@
+
 import { useState } from 'react';
 import {
+  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
-  ImageBackground,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -89,20 +90,8 @@ const weatherData: WeatherData[] = [
     ],
     daily: [
       { day: 'Mon', condition: 'Sunny', icon: '☀️', high: 25, low: 16 },
-      {
-        day: 'Tue',
-        condition: 'Partly Cloudy',
-        icon: '🌤️',
-        high: 23,
-        low: 15,
-      },
-      {
-        day: 'Wed',
-        condition: 'Showers',
-        icon: '🌦️',
-        high: 20,
-        low: 14,
-      },
+      { day: 'Tue', condition: 'Partly Cloudy', icon: '🌤️', high: 23, low: 15 },
+      { day: 'Wed', condition: 'Showers', icon: '🌦️', high: 20, low: 14 },
       { day: 'Thu', condition: 'Sunny', icon: '☀️', high: 24, low: 15 },
       { day: 'Fri', condition: 'Sunny', icon: '☀️', high: 26, low: 17 },
     ],
@@ -112,7 +101,6 @@ const weatherData: WeatherData[] = [
     moonset: '08:44',
     moonPhase: 'Waxing Gibbous 🌔',
   },
-
   {
     city: 'Cape Town',
     country: 'South Africa',
@@ -155,41 +143,11 @@ const weatherData: WeatherData[] = [
       { time: '9 AM', temperature: 18, icon: '🌤️' },
     ],
     daily: [
-      {
-        day: 'Mon',
-        condition: 'Partly Cloudy',
-        icon: '🌤️',
-        high: 20,
-        low: 14,
-      },
-      {
-        day: 'Tue',
-        condition: 'Cloudy',
-        icon: '☁️',
-        high: 18,
-        low: 13,
-      },
-      {
-        day: 'Wed',
-        condition: 'Rain',
-        icon: '🌧️',
-        high: 16,
-        low: 12,
-      },
-      {
-        day: 'Thu',
-        condition: 'Partly Cloudy',
-        icon: '🌤️',
-        high: 19,
-        low: 13,
-      },
-      {
-        day: 'Fri',
-        condition: 'Sunny',
-        icon: '☀️',
-        high: 21,
-        low: 14,
-      },
+      { day: 'Mon', condition: 'Partly Cloudy', icon: '🌤️', high: 20, low: 14 },
+      { day: 'Tue', condition: 'Cloudy', icon: '☁️', high: 18, low: 13 },
+      { day: 'Wed', condition: 'Rain', icon: '🌧️', high: 16, low: 12 },
+      { day: 'Thu', condition: 'Partly Cloudy', icon: '🌤️', high: 19, low: 13 },
+      { day: 'Fri', condition: 'Sunny', icon: '☀️', high: 21, low: 14 },
     ],
     sunrise: '06:18',
     sunset: '18:45',
@@ -197,7 +155,6 @@ const weatherData: WeatherData[] = [
     moonset: '09:12',
     moonPhase: 'Waxing Gibbous 🌔',
   },
-
   {
     city: 'Durban',
     country: 'South Africa',
@@ -240,41 +197,11 @@ const weatherData: WeatherData[] = [
       { time: '9 AM', temperature: 25, icon: '☀️' },
     ],
     daily: [
-      {
-        day: 'Mon',
-        condition: 'Mostly Cloudy',
-        icon: '☁️',
-        high: 28,
-        low: 20,
-      },
-      {
-        day: 'Tue',
-        condition: 'Partly Cloudy',
-        icon: '🌤️',
-        high: 29,
-        low: 21,
-      },
-      {
-        day: 'Wed',
-        condition: 'Showers',
-        icon: '🌦️',
-        high: 27,
-        low: 20,
-      },
-      {
-        day: 'Thu',
-        condition: 'Sunny',
-        icon: '☀️',
-        high: 30,
-        low: 21,
-      },
-      {
-        day: 'Fri',
-        condition: 'Partly Cloudy',
-        icon: '🌤️',
-        high: 28,
-        low: 20,
-      },
+      { day: 'Mon', condition: 'Mostly Cloudy', icon: '☁️', high: 28, low: 20 },
+      { day: 'Tue', condition: 'Partly Cloudy', icon: '🌤️', high: 29, low: 21 },
+      { day: 'Wed', condition: 'Showers', icon: '🌦️', high: 27, low: 20 },
+      { day: 'Thu', condition: 'Sunny', icon: '☀️', high: 30, low: 21 },
+      { day: 'Fri', condition: 'Partly Cloudy', icon: '🌤️', high: 28, low: 20 },
     ],
     sunrise: '05:05',
     sunset: '18:08',
@@ -309,16 +236,14 @@ export default function App() {
             key={weather.city}
             style={[
               styles.cityButton,
-              selectedCity === weather.country &&
-                styles.selectedCityButton,
+              selectedCity === weather.country && styles.selectedCityButton,
             ]}
             onPress={() => setSelectedCity(weather.country)}
           >
             <Text
               style={[
                 styles.cityButtonText,
-                selectedCity === weather.country &&
-                  styles.selectedCityButtonText,
+                selectedCity === weather.country && styles.selectedCityButtonText,
               ]}
             >
               {weather.city}
@@ -328,7 +253,7 @@ export default function App() {
       </View>
 
       <ImageBackground
-        source={selectedWeather.backgroundImage}
+        source={{ uri: selectedWeather.backgroundImage }}
         style={styles.weatherHero}
         imageStyle={styles.weatherHeroImage}
       >
@@ -339,9 +264,7 @@ export default function App() {
           <Text style={styles.currentTemperature}>
             {selectedWeather.temperature}°
           </Text>
-          <Text style={styles.currentCondition}>
-            {selectedWeather.condition}
-          </Text>
+          <Text style={styles.currentCondition}>{selectedWeather.condition}</Text>
         </View>
       </ImageBackground>
 
@@ -374,7 +297,6 @@ export default function App() {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>24 Hour Forecast</Text>
-
         <ScrollView
           horizontal={false}
           showsHorizontalScrollIndicator={false}
@@ -394,18 +316,15 @@ export default function App() {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>5 Day Forecast</Text>
-
         <View style={styles.dailyContainer}>
           {selectedWeather.daily.map((day) => {
             <View key={day.day} style={styles.dailyCard}>
               <Text style={styles.dayName}>{day.day}</Text>
               <Text style={styles.dailyIcon}>{day.icon}</Text>
-
               <View style={styles.dailyTemperatures}>
                 <Text style={styles.highTemperature}>{day.low}°</Text>
                 <Text style={styles.lowTemperature}>{day.high}°</Text>
               </View>
-
               <Text style={styles.conditionText}>{day.condition}</Text>
             </View>;
           })}
@@ -414,7 +333,6 @@ export default function App() {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Sun & Moon</Text>
-
         <View style={styles.sunMoonCard}>
           <WeatherDetail
             label="Sunrise"
@@ -457,7 +375,7 @@ function WeatherDetail({ label, value }: WeatherDetailProps) {
   return (
     <View style={styles.detailItem}>
       <Text style={styles.detailLabel}>{label}</Text>
-      <Text style={styles.detailValue}>{label}</Text>
+      <Text style={styles.detailValue}>{value}</Text>
     </View>
   );
 }
@@ -665,4 +583,3 @@ const styles = StyleSheet.create({
     color: '#c62828',
   },
 });
-
